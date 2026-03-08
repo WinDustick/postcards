@@ -58,7 +58,7 @@ class StreamlitAnimator:
         self.glitch_chars = "01#$%&<>?{}[]/~X@!|"
         self.rus_glitch = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789"
 
-    def type_text(self, text: str, color_class: str = "green", speed: float = 0.02):
+    def type_text(self, text: str, color_class: str = "pink", speed: float = 0.02):
         """Эффект печатной машинки"""
         placeholder = st.empty()
         current_text = ""
@@ -78,7 +78,7 @@ class StreamlitAnimator:
             placeholder.markdown(f"<div class='terminal-text cyan'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</div>", unsafe_allow_html=True)
             time.sleep(0.05)
 
-    def hex_reveal_effect(self, text: str, color_class: str = "cyan", duration: float = 2.5):
+    def hex_reveal_effect(self, text: str, color_class: str = "pink", duration: float = 2.5):
         """Анимация волшебного раскрытия текста"""
         placeholder = st.empty()
         chars = list(text)
@@ -113,7 +113,7 @@ class StreamlitAnimator:
             unsafe_allow_html=True
         )
 
-    def bruteforce_effect(self, target: str, color_class: str = "green", duration: float = 2.0):
+    def bruteforce_effect(self, target: str, color_class: str = "pink", duration: float = 2.0):
         """Эффект подбора символов (брутфорс)"""
         placeholder = st.empty()
         chars = list(target)
@@ -215,27 +215,27 @@ def run_greeting():
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Phase 1: Подготовка
-    animator.type_text("•" * 60, "pink", 0.005)
-    animator.type_text("✨ Готовим весенний сюрприз...", "cyan", 0.03)
+    animator.type_text("•" * 80, "pink", 0.005)
+    animator.type_text("✨ Готовим весенний сюрприз...", "pink", 0.03)
     st.markdown("<br>", unsafe_allow_html=True)
     
     secret_payload = "Секретный букет: Поздравление для самых прекрасных девушек"
     animator.hex_reveal_effect(secret_payload, "pink", 2.0)
     
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("Сегодня — про тепло, улыбки и вдохновение.", "cyan", 0.02)
+    animator.type_text("Сегодня — про тепло, улыбки и вдохновение.", "pink", 0.02)
     time.sleep(0.5)
     
     # Phase 2: Настроение
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("•" * 60, "pink", 0.005)
-    animator.type_text("🌸 Собираем добрые пожелания", "cyan", 0.03)
-    animator.type_text("•" * 60, "pink", 0.005)
+    animator.type_text("•" * 80, "pink", 0.005)
+    animator.type_text("🌸 Собираем добрые пожелания", "pink", 0.03)
+    animator.type_text("•" * 80, "pink", 0.005)
     st.markdown("<br>", unsafe_allow_html=True)
     
     animator.progress_bar_effect(steps=20, label="Наполняем открытку теплом")
     time.sleep(0.5)
-    animator.type_text("Готово! Открываем поздравление 💌", "green", 0.03)
+    animator.type_text("Готово! Открываем поздравление 💌", "pink", 0.03)
     time.sleep(0.5)
     
     # Phase 3: Message
@@ -247,7 +247,7 @@ def run_greeting():
         "Пусть эта весна принесет вам кучу позитива и энергии. ",
         "Желаю, чтобы код писался легко, сессии закрывались без нервов, а дедлайны боялись вас, а не наоборот. ",
         "Оставайтесь такими же классными, умными и красивыми! ",
-        "Хорошо вам отпраздновать сегодня!»"
+        "Хорошо вам отпраздновать сегодня!"
     ]
     for line in greeting_lines:
         animator.bruteforce_effect(line, "pink", 1.2)
@@ -258,11 +258,12 @@ def run_greeting():
     
     # Phase 4: Финальные слова
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("•" * 60, "pink", 0.005)
+    animator.type_text("•" * 80, "pink", 0.005)
     animator.progress_bar_effect(steps=15, label="Дарим виртуальные объятия")
-    animator.type_text("💗 Спасибо за вашу красоту, ум и доброту!", "green", 0.04)
-    animator.type_text("✨ Пусть каждый день будет особенным.", "green", 0.04)
-    animator.type_text("•" * 60, "pink", 0.005)
+    animator.type_text("💗 Спасибо за вашу красоту, ум и доброту!", "pink", 0.04)
+    animator.type_text("✨ Пусть каждый день будет особенным.", "pink", 0.04)
+    animator.type_text("•" * 80, "pink", 0.005)
+    animator.type_text("                                                    Adilet" , "pink", 0.05)
 
 # Блок для скрытия начального интерфейса после запуска
 ui_container = st.empty()
