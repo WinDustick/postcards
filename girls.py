@@ -75,7 +75,7 @@ class StreamlitAnimator:
             percent = i / steps
             bar = "█" * int(percent * 30) + "░" * (30 - int(percent * 30))
             safe_label = html.escape(label)
-            placeholder.markdown(f"<div class='terminal-text cyan'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</div>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text pink'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</div>", unsafe_allow_html=True)
             time.sleep(0.05)
 
     def hex_reveal_effect(self, text: str, color_class: str = "pink", duration: float = 2.5):
@@ -263,7 +263,7 @@ def run_greeting():
     animator.type_text("💗 Спасибо за вашу красоту, ум и доброту!", "pink", 0.04)
     animator.type_text("✨ Пусть каждый день будет особенным.", "pink", 0.04)
     animator.type_text("•" * 80, "pink", 0.005)
-    animator.type_text("                                                    Adilet" , "pink", 0.05)
+    animator.type_text("                                                                  Adilet" , "pink", 0.005)
 
 # Блок для скрытия начального интерфейса после запуска
 ui_container = st.empty()
