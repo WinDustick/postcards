@@ -263,7 +263,7 @@ def run_greeting():
     animator.type_text("💗 Спасибо за вашу красоту, ум и доброту!", "pink", 0.04)
     animator.type_text("✨ Пусть каждый день будет особенным.", "pink", 0.04)
     animator.type_text("•" * 80, "pink", 0.005)
-    animator.type_text("                                                                        Adilet" , "pink", 0.005)
+    animator.type_text("                                                                        WinDustick" , "pink", 0.005)
 
 # Блок для скрытия начального интерфейса после запуска
 ui_container = st.empty()
