@@ -192,7 +192,8 @@ class StreamlitAnimator:
                                                            ░███                           
                                                            █████                          
                                                           ░░░░░                           '''
-        
+        lines = ascii_art.split("\n")
+
         placeholder = st.empty()
         full_html = ""
 
