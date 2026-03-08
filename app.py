@@ -3,8 +3,8 @@ import time
 import random
 import html
 
-# Настройка страницы
-st.set_page_config(page_title="SECURE TRANSMISSION", page_icon="🔒", layout="centered")
+# Настройка страницы (изменено на wide для широкого терминала)
+st.set_page_config(page_title="SECURE TRANSMISSION", page_icon="🔒", layout="wide")
 
 # CSS для имитации хакерского терминала
 st.markdown("""
@@ -17,6 +17,9 @@ st.markdown("""
         font-size: 14px;
         line-height: 1.2;
         margin-bottom: 0px;
+        /* Жестко фиксируем пробелы и запрещаем перенос строк! */
+        white-space: pre !important; 
+        overflow-x: auto;
     }
     .green { color: #00ff00; }
     .pink { color: #ff77ff; }
@@ -33,6 +36,7 @@ st.markdown("""
         font-family: 'Courier New', Courier, monospace;
         font-weight: bold;
         width: 100%;
+        margin-top: 20px;
     }
     div.stButton > button:hover {
         background-color: #00ff00;
@@ -56,7 +60,7 @@ class StreamlitAnimator:
         for char in text:
             current_text += char
             safe_text = html.escape(current_text)
-            placeholder.markdown(f"<pre class='terminal-text {color_class}'>{safe_text}</pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text {color_class}'>{safe_text}</div>", unsafe_allow_html=True)
             time.sleep(speed)
 
     def progress_bar_effect(self, steps: int = 15, label: str = "Loading"):
@@ -66,7 +70,7 @@ class StreamlitAnimator:
             percent = i / steps
             bar = "█" * int(percent * 30) + "░" * (30 - int(percent * 30))
             safe_label = html.escape(label)
-            placeholder.markdown(f"<pre class='terminal-text cyan'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text cyan'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</div>", unsafe_allow_html=True)
             time.sleep(0.05)
 
     def hex_reveal_effect(self, text: str, color_class: str = "cyan", duration: float = 2.5):
@@ -98,13 +102,13 @@ class StreamlitAnimator:
                 ascii_part = html.escape("".join(ascii_list))
                 output += f"{offset}  {hex_part}{padding} |{ascii_part}|\n"
                 
-            placeholder.markdown(f"<pre class='terminal-text {color_class}'>{output}</pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text {color_class}'>{output}</div>", unsafe_allow_html=True)
             time.sleep(0.1)
             
         # Схлопывание в финальный текст
         time.sleep(0.5)
         safe_text = html.escape(text)
-        placeholder.markdown(f"<pre class='terminal-text green'>[+] DECRYPTED: {safe_text}</pre>", unsafe_allow_html=True)
+        placeholder.markdown(f"<div class='terminal-text green'>[+] DECRYPTED: {safe_text}</div>", unsafe_allow_html=True)
 
     def bruteforce_effect(self, target: str, color_class: str = "green", duration: float = 2.0):
         """Эффект подбора символов (брутфорс)"""
@@ -130,11 +134,11 @@ class StreamlitAnimator:
                         current[i] = random.choice(pool)
             
             display_text = html.escape("".join(current))
-            placeholder.markdown(f"<pre class='terminal-text {color_class}'>{display_text}</pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text {color_class}'>{display_text}</div>", unsafe_allow_html=True)
             time.sleep(0.05)
             
         safe_target = html.escape(target)
-        placeholder.markdown(f"<pre class='terminal-text {color_class}'>{safe_target}</pre>", unsafe_allow_html=True)
+        placeholder.markdown(f"<div class='terminal-text {color_class}'>{safe_target}</div>", unsafe_allow_html=True)
 
     def bruteforce_and_type(self, prefix: str, suffix: str, prefix_duration: float = 0.8):
         """Комбинированный эффект: брутфорс префикса, затем печать суффикса на той же строке"""
@@ -158,7 +162,7 @@ class StreamlitAnimator:
                         current[i] = random.choice(pool)
             
             display_text = html.escape("".join(current))
-            placeholder.markdown(f"<pre class='terminal-text'><span class='green'>{display_text}</span></pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text'><span class='green'>{display_text}</span></div>", unsafe_allow_html=True)
             time.sleep(0.05)
             
         # 2. Допечатываем суффикс
@@ -169,11 +173,11 @@ class StreamlitAnimator:
             safe_prefix = html.escape(prefix)
             safe_suffix = html.escape(current_suffix)
             html_content = f"<span class='green'>{safe_prefix}</span><span class='yellow'>{safe_suffix}</span>"
-            placeholder.markdown(f"<pre class='terminal-text'>{html_content}</pre>", unsafe_allow_html=True)
+            placeholder.markdown(f"<div class='terminal-text'>{html_content}</div>", unsafe_allow_html=True)
             time.sleep(0.02)
 
     def draw_ascii_flower(self):
-        """Отрисовка цветного ASCII-арт цветка для Streamlit"""
+        """Отрисовка цветного ASCII-арт цветка для Streamlit с защитой от сжатия пробелов"""
         ascii_art = r'''░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░""""░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░`                "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -222,12 +226,14 @@ class StreamlitAnimator:
         background_chars = set('░"\'.:`~ ')
         full_html = ""
         
-        # Чтобы не перегружать Streamlit, добавляем кусками по несколько строк
         for i, line in enumerate(lines):
             colored_line = ""
             for char in line:
-                # Экранируем символы, чтобы избежать ошибки HTML/JS
-                safe_char = html.escape(char)
+                # Превращаем пробелы в HTML неразрывные пробелы, чтобы они не исчезали!
+                if char == " ":
+                    safe_char = "&nbsp;"
+                else:
+                    safe_char = html.escape(char)
                 
                 if char in background_chars:
                     colored_line += f"<span class='pink'>{safe_char}</span>"
@@ -236,12 +242,12 @@ class StreamlitAnimator:
                 else:
                     colored_line += f"<span class='green'>{safe_char}</span>"
             
-            full_html += colored_line + "\n"
+            # Заменяем \n на <br> для гарантированного переноса
+            full_html += colored_line + "<br>"
             
-            # Обновляем экран через каждые 2 строки для плавности без лагов
             if i % 2 == 0 or i == len(lines) - 1:
-                # Уменьшаем шрифт цветка, чтобы он влез в веб-интерфейс
-                placeholder.markdown(f"<pre class='terminal-text' style='font-size: 10px; line-height: 1.0;'>{full_html}</pre>", unsafe_allow_html=True)
+                # Рисуем внутри div с классом terminal-text
+                placeholder.markdown(f"<div class='terminal-text' style='font-size: 13px; line-height: 1.15;'>{full_html}</div>", unsafe_allow_html=True)
                 time.sleep(0.05)
 
 
@@ -252,7 +258,7 @@ def run_greeting():
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Phase 1: Connection
-    animator.type_text("═" * 60, "cyan", 0.01)
+    animator.type_text("═" * 80, "cyan", 0.005)
     animator.type_text("[INTERCEPTING ENCRYPTED HANDSHAKE...]", "cyan", 0.03)
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -265,12 +271,12 @@ def run_greeting():
     
     # Phase 2: Decryption
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("═" * 60, "yellow", 0.01)
+    animator.type_text("═" * 80, "yellow", 0.005)
     animator.type_text("[INITIATING BRUTEFORCE PROTOCOL]", "yellow", 0.03)
-    animator.type_text("═" * 60, "yellow", 0.01)
+    animator.type_text("═" * 80, "yellow", 0.005)
     st.markdown("<br>", unsafe_allow_html=True)
     
-    animator.progress_bar_effect(steps=15, label="Cracking Progress")
+    animator.progress_bar_effect(steps=20, label="Cracking Progress")
     time.sleep(0.5)
     animator.type_text("[+] ✓ PAYLOAD DECRYPTED", "green", 0.03)
     time.sleep(0.5)
@@ -312,11 +318,11 @@ def run_greeting():
     
     # Phase 4: Closure
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("═" * 60, "cyan", 0.01)
-    animator.progress_bar_effect(steps=10, label="Connection Closure")
+    animator.type_text("═" * 80, "cyan", 0.005)
+    animator.progress_bar_effect(steps=15, label="Connection Closure")
     animator.type_text("[+] Connection securely closed.", "green", 0.04)
     animator.type_text("[+] Transmission complete. Safe travels!", "green", 0.04)
-    animator.type_text("═" * 60, "cyan", 0.01)
+    animator.type_text("═" * 80, "cyan", 0.005)
 
 # Блок для скрытия начального интерфейса после запуска
 ui_container = st.empty()
