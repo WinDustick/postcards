@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import random
+import html
 
 # Настройка страницы
 st.set_page_config(page_title="SECURE TRANSMISSION", page_icon="🔒", layout="centered")
@@ -54,7 +55,8 @@ class StreamlitAnimator:
         current_text = ""
         for char in text:
             current_text += char
-            placeholder.markdown(f"<pre class='terminal-text {color_class}'>{current_text}</pre>", unsafe_allow_html=True)
+            safe_text = html.escape(current_text)
+            placeholder.markdown(f"<pre class='terminal-text {color_class}'>{safe_text}</pre>", unsafe_allow_html=True)
             time.sleep(speed)
 
     def progress_bar_effect(self, steps: int = 15, label: str = "Loading"):
@@ -63,7 +65,8 @@ class StreamlitAnimator:
         for i in range(steps + 1):
             percent = i / steps
             bar = "█" * int(percent * 30) + "░" * (30 - int(percent * 30))
-            placeholder.markdown(f"<pre class='terminal-text cyan'>[*] {label}: [{bar}] {int(percent * 100)}%</pre>", unsafe_allow_html=True)
+            safe_label = html.escape(label)
+            placeholder.markdown(f"<pre class='terminal-text cyan'>[*] {safe_label}: [{bar}] {int(percent * 100)}%</pre>", unsafe_allow_html=True)
             time.sleep(0.05)
 
     def hex_reveal_effect(self, text: str, color_class: str = "cyan", duration: float = 2.5):
@@ -92,7 +95,7 @@ class StreamlitAnimator:
                         
                 hex_part = " ".join(hex_list)
                 padding = "   " * (chunk_size - len(line_chars))
-                ascii_part = "".join(ascii_list)
+                ascii_part = html.escape("".join(ascii_list))
                 output += f"{offset}  {hex_part}{padding} |{ascii_part}|\n"
                 
             placeholder.markdown(f"<pre class='terminal-text {color_class}'>{output}</pre>", unsafe_allow_html=True)
@@ -100,7 +103,8 @@ class StreamlitAnimator:
             
         # Схлопывание в финальный текст
         time.sleep(0.5)
-        placeholder.markdown(f"<pre class='terminal-text green'>[+] DECRYPTED: {text}</pre>", unsafe_allow_html=True)
+        safe_text = html.escape(text)
+        placeholder.markdown(f"<pre class='terminal-text green'>[+] DECRYPTED: {safe_text}</pre>", unsafe_allow_html=True)
 
     def bruteforce_effect(self, target: str, color_class: str = "green", duration: float = 2.0):
         """Эффект подбора символов (брутфорс)"""
@@ -125,11 +129,12 @@ class StreamlitAnimator:
                     else:
                         current[i] = random.choice(pool)
             
-            display_text = "".join(current)
+            display_text = html.escape("".join(current))
             placeholder.markdown(f"<pre class='terminal-text {color_class}'>{display_text}</pre>", unsafe_allow_html=True)
             time.sleep(0.05)
             
-        placeholder.markdown(f"<pre class='terminal-text {color_class}'>{target}</pre>", unsafe_allow_html=True)
+        safe_target = html.escape(target)
+        placeholder.markdown(f"<pre class='terminal-text {color_class}'>{safe_target}</pre>", unsafe_allow_html=True)
 
     def bruteforce_and_type(self, prefix: str, suffix: str, prefix_duration: float = 0.8):
         """Комбинированный эффект: брутфорс префикса, затем печать суффикса на той же строке"""
@@ -152,7 +157,7 @@ class StreamlitAnimator:
                     else:
                         current[i] = random.choice(pool)
             
-            display_text = "".join(current)
+            display_text = html.escape("".join(current))
             placeholder.markdown(f"<pre class='terminal-text'><span class='green'>{display_text}</span></pre>", unsafe_allow_html=True)
             time.sleep(0.05)
             
@@ -161,8 +166,10 @@ class StreamlitAnimator:
         current_suffix = ""
         for char in full_suffix:
             current_suffix += char
-            html = f"<span class='green'>{prefix}</span><span class='yellow'>{current_suffix}</span>"
-            placeholder.markdown(f"<pre class='terminal-text'>{html}</pre>", unsafe_allow_html=True)
+            safe_prefix = html.escape(prefix)
+            safe_suffix = html.escape(current_suffix)
+            html_content = f"<span class='green'>{safe_prefix}</span><span class='yellow'>{safe_suffix}</span>"
+            placeholder.markdown(f"<pre class='terminal-text'>{html_content}</pre>", unsafe_allow_html=True)
             time.sleep(0.02)
 
     def draw_ascii_flower(self):
@@ -219,12 +226,15 @@ class StreamlitAnimator:
         for i, line in enumerate(lines):
             colored_line = ""
             for char in line:
+                # Экранируем символы, чтобы избежать ошибки HTML/JS
+                safe_char = html.escape(char)
+                
                 if char in background_chars:
-                    colored_line += f"<span class='pink'>{char}</span>"
+                    colored_line += f"<span class='pink'>{safe_char}</span>"
                 elif i <= 21:
-                    colored_line += f"<span class='red'>{char}</span>"
+                    colored_line += f"<span class='red'>{safe_char}</span>"
                 else:
-                    colored_line += f"<span class='green'>{char}</span>"
+                    colored_line += f"<span class='green'>{safe_char}</span>"
             
             full_html += colored_line + "\n"
             
@@ -308,13 +318,19 @@ def run_greeting():
     animator.type_text("[+] Transmission complete. Safe travels!", "green", 0.04)
     animator.type_text("═" * 60, "cyan", 0.01)
 
-# Интерфейс главной страницы
-st.markdown("<h3 style='text-align: center; color: #00ff00; font-family: monospace;'>[ TERMINAL ACCESS SECURED ]</h3>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #aaaaaa; font-family: monospace;'>System stands by for authorization sequence.</p>", unsafe_allow_html=True)
+# Блок для скрытия начального интерфейса после запуска
+ui_container = st.empty()
 
-# Центрируем кнопку
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    if st.button("INITIATE PROTOCOL"):
-        st.empty() # Очистка места перед анимацией
-        run_greeting()
+with ui_container.container():
+    st.markdown("<h3 style='text-align: center; color: #00ff00; font-family: monospace;'>[ TERMINAL ACCESS SECURED ]</h3>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #aaaaaa; font-family: monospace;'>System stands by for authorization sequence.</p>", unsafe_allow_html=True)
+
+    # Центрируем кнопку
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        start_button = st.button("INITIATE PROTOCOL")
+
+if start_button:
+    # Очищаем кнопку и заголовки, чтобы текст занимал всю ширину контейнера
+    ui_container.empty()
+    run_greeting()
