@@ -262,7 +262,7 @@ def run_greeting():
     animator.type_text("[INTERCEPTING ENCRYPTED HANDSHAKE...]", "cyan", 0.03)
     st.markdown("<br>", unsafe_allow_html=True)
     
-    secret_payload = "CLASSIFIED_PAYLOAD: [MENTOR_APPRECIATION_PROTOCOL_V8.3_INITIATED]"
+    secret_payload = "CLASSIFIED_PAYLOAD: [Greetings for Best InfoSec Mentor]"
     animator.hex_reveal_effect(secret_payload, "cyan", 2.0)
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -271,9 +271,9 @@ def run_greeting():
     
     # Phase 2: Decryption
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("═" * 80, "yellow", 0.005)
-    animator.type_text("[INITIATING BRUTEFORCE PROTOCOL]", "yellow", 0.03)
-    animator.type_text("═" * 80, "yellow", 0.005)
+    animator.type_text("═" * 80, "cyan", 0.005)
+    animator.type_text("[INITIATING BRUTEFORCE PROTOCOL]", "cyan", 0.03)
+    animator.type_text("═" * 80, "cyan", 0.005)
     st.markdown("<br>", unsafe_allow_html=True)
     
     animator.progress_bar_effect(steps=20, label="Cracking Progress")
@@ -285,43 +285,30 @@ def run_greeting():
     st.markdown("<br>", unsafe_allow_html=True)
     animator.bruteforce_effect("С 8 МАРТА! 🌷", "pink", 2.0)
     st.markdown("<br>", unsafe_allow_html=True)
-    
-    animator.draw_ascii_flower()
-    st.markdown("<br>", unsafe_allow_html=True)
-    
+
     greeting_lines = [
-        "Спасибо за то, что учите находить уязвимости в системах",
-        "и выстраивать железобетонную защиту."
+        "Как идеальный пароль, вы сочетаете в себе уникальность, надежность и силу.",
+        "Спасибо за ваш менторский аптайм и за то, что помогали и поддерживали меня.",
+        "Желаю, чтобы ваше хорошее настроение никогда не страдало от DDoS-атак, а каждый день приносил только легитимный и радостный трафик.",
+        "Пусть в жизни будет поменьше ложных срабатываний и побольше поводов для улыбок!"
     ]
     for line in greeting_lines:
         animator.bruteforce_effect(line, "pink", 1.2)
-        
+
     st.markdown("<br>", unsafe_allow_html=True)
-    animator.type_text("Пусть в вашей жизни будет:", "cyan", 0.02)
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    benefits = [
-        ("[+] 0 дней простоев", "Zero-Days только в виде отдыха"),
-        ("[+] 100% Uptime", "хорошего настроения"),
-        ("[+] Никакого брутфорса", "нервной системы"),
-        ("[+] DDoS защита от стресса", "с полной отдачей"),
-        ("[+] Encryption для здоровья", "с максимальной приватностью")
-    ]
-    
-    for prefix, suffix in benefits:
-        animator.bruteforce_and_type(prefix, suffix, 0.8)
-        
-    time.sleep(1)
-    st.markdown("<br>", unsafe_allow_html=True)
-    closing_msg = "Вы — потрясающий наставник и крутой профессионал!"
+    closing_msg = "Вы потрясающий наставник и крутой профессионал!"
     animator.bruteforce_effect(closing_msg, "pink", 2.0)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    animator.draw_ascii_flower()
+    st.markdown("<br>", unsafe_allow_html=True)
     
     # Phase 4: Closure
     st.markdown("<br>", unsafe_allow_html=True)
     animator.type_text("═" * 80, "cyan", 0.005)
     animator.progress_bar_effect(steps=15, label="Connection Closure")
     animator.type_text("[+] Connection securely closed.", "green", 0.04)
-    animator.type_text("[+] Transmission complete. Safe travels!", "green", 0.04)
+    animator.type_text("[+] Transmission complete. Have a great day!", "green", 0.04)
     animator.type_text("═" * 80, "cyan", 0.005)
 
 # Блок для скрытия начального интерфейса после запуска
